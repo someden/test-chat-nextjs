@@ -1,3 +1,4 @@
+import { LogoutButton } from '@/components/LogoutButton';
 import { getUser } from '@/lib/user';
 
 export default async function Home() {
@@ -9,6 +10,7 @@ export default async function Home() {
         {user ? (
           <div>
             <p>Hello, {user.username}!</p>
+            <LogoutButton />
           </div>
         ) : 'Who are you?'}
       </main>
