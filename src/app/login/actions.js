@@ -4,7 +4,7 @@ import { parseWithZod } from '@conform-to/zod';
 
 import { loginSchema } from './schema';
 import { redirect } from 'next/navigation';
-import { setUser } from '@/lib/user';
+import { setUserAction } from '@/actions/user';
 
 /**
  * @typedef {import('@/lib/user').User} User
@@ -36,7 +36,7 @@ export async function login(prevState, formData) {
     return submission.reply({ formErrors: ['Wrong username or password'] });
   }
 
-  await setUser(result);
+  await setUserAction(result);
 
   redirect('/');
 }

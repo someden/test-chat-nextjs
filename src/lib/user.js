@@ -1,6 +1,6 @@
-'use server';
-
-import { cookies } from 'next/headers'
+/**
+ * @typedef {import('next/headers').UnsafeUnwrappedCookies} Cookies
+ */
 
 /**
  * @typedef {object} User
@@ -13,16 +13,19 @@ const tokenKey = 'token';
 const maxAge = 30 * 24 * 60 * 60; // 30 days
 
 /**
+ * @param {Cookies} cookieStore
  * @param {User} user
  */
-export async function setUser(user) {
-  const cookieStore = await cookies();
+export function setUser(cookieStore, user) {
   cookieStore.set(usernameKey, user.username);
   cookieStore.set({ name: tokenKey, value: user.token, maxAge, httpOnly: true });
 }
 
-export async function getUser() {
-  const cookieStore = await cookies();
+/**
+ * @param {Cookies} cookieStore
+ * @returns {User}
+ */
+export function getUser(cookieStore) {
   const username = cookieStore.get(usernameKey)?.value;
   const token = cookieStore.get(tokenKey)?.value;
   const user = username && token ? { username, token } : null;
@@ -30,8 +33,10 @@ export async function getUser() {
   return user;
 }
 
-export async function deleteUser() {
-  const cookieStore = await cookies();
+/**
+ * @param {Cookies} cookieStore
+ */
+export function deleteUser(cookieStore) {
   cookieStore.delete(usernameKey);
   cookieStore.delete(tokenKey);
 }
