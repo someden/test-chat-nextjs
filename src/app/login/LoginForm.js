@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from "react";
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 
@@ -12,7 +12,7 @@ import { loginSchema } from './schema';
 import { login } from './actions';
 
 export function LoginForm() {
-  const [lastResult, action] = useFormState(login, undefined);
+  const [lastResult, action] = useActionState(login, undefined);
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
