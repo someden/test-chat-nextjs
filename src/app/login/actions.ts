@@ -10,7 +10,7 @@ import { setUserAction } from '@/actions/user';
  * @typedef {import('@/lib/user').User} User
  */
 
-export async function login(prevState, formData) {
+export async function login(prevState: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
     schema: loginSchema,
   });

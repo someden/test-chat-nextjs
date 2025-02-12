@@ -1,31 +1,20 @@
-/**
- * @typedef {import('next/headers').UnsafeUnwrappedCookies} Cookies
- */
+import { type UnsafeUnwrappedCookies } from "next/headers";
 
-/**
- * @typedef {object} User
- * @property {string} token
- * @property {string} username
- */
+export type User = {
+  token: string;
+  username: string;
+}
 
 const usernameKey = 'username';
 const tokenKey = 'token';
 const maxAge = 30 * 24 * 60 * 60; // 30 days
 
-/**
- * @param {Cookies} cookieStore
- * @param {User} user
- */
-export function setUser(cookieStore, user) {
+export function setUser(cookieStore: UnsafeUnwrappedCookies, user: User) {
   cookieStore.set(usernameKey, user.username);
   cookieStore.set({ name: tokenKey, value: user.token, maxAge, httpOnly: true });
 }
 
-/**
- * @param {Cookies} cookieStore
- * @returns {User}
- */
-export function getUser(cookieStore) {
+export function getUser(cookieStore: Omit<UnsafeUnwrappedCookies, 'set' | 'delete'>) {
   const username = cookieStore.get(usernameKey)?.value;
   const token = cookieStore.get(tokenKey)?.value;
   const user = username && token ? { username, token } : null;
@@ -33,10 +22,7 @@ export function getUser(cookieStore) {
   return user;
 }
 
-/**
- * @param {Cookies} cookieStore
- */
-export function deleteUser(cookieStore) {
+export function deleteUser(cookieStore: UnsafeUnwrappedCookies) {
   cookieStore.delete(usernameKey);
   cookieStore.delete(tokenKey);
 }

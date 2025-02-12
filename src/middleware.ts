@@ -1,14 +1,7 @@
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { getUser } from '@/lib/user';
 
-/**
- * @typedef {import('next/server').NextRequest} NextRequest
- */
-
-/**
- * @param {NextRequest} request
- */
-export function middleware(request) {
+export function middleware(request: NextRequest) {
   const user = getUser(request.cookies);
 
   if (!user) {

@@ -1,24 +1,14 @@
 'use server';
 
 import { cookies } from 'next/headers'
-import { setUser, getUser, deleteUser } from '@/lib/user';
+import { type User, setUser, getUser, deleteUser } from '@/lib/user';
 
-/**
- * @typedef {import('@/lib/user').User} User
- */
-
-/**
- * @param {User} user
- */
-export async function setUserAction(user) {
+export async function setUserAction(user: User) {
   const cookieStore = await cookies();
   
   setUser(cookieStore, user);
 }
 
-/**
- * @returns {User}
- */
 export async function getUserAction() {
   const cookieStore = await cookies();
 
