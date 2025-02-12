@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { loginSchema } from './schema';
+import { loginRequestSchema } from './schema';
 import { login } from './actions';
 
 export function LoginForm() {
@@ -16,7 +16,7 @@ export function LoginForm() {
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: loginSchema });
+      return parseWithZod(formData, { schema: loginRequestSchema });
     },
   });
 

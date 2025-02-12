@@ -2,17 +2,14 @@
 
 import { parseWithZod } from '@conform-to/zod';
 
-import { loginSchema } from './schema';
+import { loginRequestSchema, loginResponseSchema } from './schema';
 import { redirect } from 'next/navigation';
 import { setUserAction } from '@/actions/user';
-
-/**
- * @typedef {import('@/lib/user').User} User
- */
+import { type User } from '@/lib/user';
 
 export async function login(prevState: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
-    schema: loginSchema,
+    schema: loginRequestSchema,
   });
 
   if (submission.status !== 'success') {
@@ -27,16 +24,17 @@ export async function login(prevState: unknown, formData: FormData) {
     body: JSON.stringify(submission.value),
   });
 
-  /**
-   * @type {User}
-   */
-  const result = await response.json();
+  console.log(response);
 
-  if (result.statusCode === 401) {
+  if (response.status === 401) {
     return submission.reply({ formErrors: ['Wrong username or password'] });
   }
 
-  await setUserAction(result);
+  const result = await response.json() as unknown;
+
+  const user = loginResponseSchema.parse(result);
+
+  await setUserAction(user);
 
   redirect('/');
 }
